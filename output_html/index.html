@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Food Festival — Усі етикетки</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#111;color:#ddd;font-family:'Ubuntu',Arial,sans-serif;padding:30px 20px}
+    h1{font-size:22px;font-weight:700;color:#eee;margin-bottom:6px}
+    .sub{font-size:12px;color:#666;margin-bottom:28px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+    .card{background:#1e1e1e;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;
+           text-decoration:none;transition:transform .15s,border-color .15s;display:block}
+    .card:hover{transform:translateY(-3px);border-color:#444}
+    .preview-wrap{position:relative;overflow:hidden;width:100%;
+                   aspect-ratio:1178/594;background:#111}
+    .preview-wrap iframe{display:block;width:1178px;height:594px;border:none;
+                          transform-origin:top left;pointer-events:none;
+                          transform:scale(0.289)}
+    .card-lbl{font-size:13px;font-weight:700;padding:8px 12px 2px}
+    .card-sub{font-size:11px;color:#666;padding:0 12px 10px}
+    .ref{margin-top:32px}
+    .ref h2{font-size:15px;color:#888;margin-bottom:12px}
+    .ref-imgs{display:flex;gap:16px;flex-wrap:wrap}
+    .ref-imgs img{border-radius:6px;border:1px solid #2a2a2a;max-height:200px;width:auto}
+    .ref-cap{font-size:11px;color:#555;margin-top:4px}
+  </style>
+</head>
+<body>
+<h1>Food Festival — Харчові ярлики</h1>
+<p class="sub">11 продуктів · Натисніть для перегляду ярлика</p>
+<div class="grid">
+<a href="01_sauce_bbq.html" class="card"><div class="preview-wrap"><iframe src="01_sauce_bbq.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(144,0,32)">СОУС · БАРБЕКЮ</div><div class="card-sub">4900&nbsp;г</div></a>
+<a href="02_ketchup_classic_5kg.html" class="card"><div class="preview-wrap"><iframe src="02_ketchup_classic_5kg.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(235,65,25)">КЕТЧУП · КЛАСИЧНИЙ</div><div class="card-sub">5000&nbsp;г</div></a>
+<a href="03_mayo_67.html" class="card"><div class="preview-wrap"><iframe src="03_mayo_67.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(25,150,220)">МАЙОНЕЗ · 67% жиру ПРЕМІУМ</div><div class="card-sub">4900&nbsp;г</div></a>
+<a href="04_mayo_real.html" class="card"><div class="preview-wrap"><iframe src="04_mayo_real.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(173,255,47)">МАЙОНЕЗНИЙ СОУС · РЕАЛ</div><div class="card-sub">4900&nbsp;г</div></a>
+<a href="05_tomato_pasta.html" class="card"><div class="preview-wrap"><iframe src="05_tomato_pasta.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(0,146,70)">ПАСТА · ТОМАТНА 25%</div><div class="card-sub">5000&nbsp;г</div></a>
+<a href="06_ketchup_premium.html" class="card"><div class="preview-wrap"><iframe src="06_ketchup_premium.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(212,175,55)">КЕТЧУП · ПРЕМІУМ</div><div class="card-sub">5000&nbsp;г</div></a>
+<a href="07_ketchup_shashlik_830.html" class="card"><div class="preview-wrap"><iframe src="07_ketchup_shashlik_830.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(215,55,125)">КЕТЧУП · ШАШЛИЧНИЙ</div><div class="card-sub">830&nbsp;г</div></a>
+<a href="08_ketchup_shashlik_5kg.html" class="card"><div class="preview-wrap"><iframe src="08_ketchup_shashlik_5kg.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(215,55,125)">КЕТЧУП · ШАШЛИЧНИЙ</div><div class="card-sub">5000&nbsp;г</div></a>
+<a href="09_sauce_cheese.html" class="card"><div class="preview-wrap"><iframe src="09_sauce_cheese.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(255,255,0)">СОУС · СИРНИЙ</div><div class="card-sub">830&nbsp;г</div></a>
+<a href="10_mustard_american.html" class="card"><div class="preview-wrap"><iframe src="10_mustard_american.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(228,182,28)">ГІРЧИЦЯ · АМЕРИКАНСЬКА</div><div class="card-sub">830&nbsp;г</div></a>
+<a href="11_ketchup_classic_830.html" class="card"><div class="preview-wrap"><iframe src="11_ketchup_classic_830.html" scrolling="no" tabindex="-1"></iframe></div><div class="card-lbl" style="color:rgb(235,65,25)">КЕТЧУП · КЛАСИЧНИЙ</div><div class="card-sub">830&nbsp;г</div></a>
+
+</div>
+<div class="ref">
+  <h2>Приклади розміщення дати (з Форма коригувань.xlsx)</h2>
+  <div class="ref-imgs">
+    <div><img src="../icons/priklad_1.png" alt="Приклад 1"><p class="ref-cap">Приклад 1 — розміщення дати</p></div>
+    <div><img src="../icons/priklad_2.png" alt="Приклад 2"><p class="ref-cap">Приклад 2 — зразок ярлика</p></div>
+  </div>
+</div>
+<script>
+function scaleFrames(){
+  document.querySelectorAll('.preview-wrap').forEach(function(w){
+    w.querySelector('iframe').style.transform='scale('+w.offsetWidth/1178+')';
+  });
+}
+window.addEventListener('load',scaleFrames);
+window.addEventListener('resize',scaleFrames);
+</script>
+</body>
+</html>

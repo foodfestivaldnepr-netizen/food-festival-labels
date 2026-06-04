@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1220">
+  <title>РЕАЛ — Food Festival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#111;display:flex;flex-direction:column;align-items:center;min-height:100vh;
+          padding:20px 10px;font-family:'Ubuntu',Arial,sans-serif}
+    p.meta{color:#777;font-size:12px;margin-bottom:12px;letter-spacing:.4px}
+    a.back{color:#888;font-size:12px;text-decoration:none;margin-bottom:14px;display:block}
+    a.back:hover{color:#bbb}
+
+    /* ── Label canvas ── */
+    .label{
+      position:relative;width:1178px;height:594px;overflow:hidden;
+      background:linear-gradient(90deg,rgba(100,175,30,0.59) 0%,rgba(100,175,30,0.08) 100%),rgb(25,43,7);
+    }
+
+    /* decorative chrome */
+    .bar-l{position:absolute;left:0;top:0;width:6px;height:100%;background:rgb(100,175,30)}
+    .bar-t{position:absolute;left:0;top:0;width:100%;height:8px;background:rgb(100,175,30)}
+    .bar-b{position:absolute;left:0;bottom:0;width:100%;height:8px;background:rgb(100,175,30)}
+    .bar-i{position:absolute;left:5px;top:15px;right:0;height:2px;background:rgba(173,255,47,0.59)}
+    .sep  {position:absolute;left:722px;top:12px;bottom:12px;width:1px;background:rgba(173,255,47,0.4)}
+
+    /* Left panel — centred text, x:14–502 */
+    .pl{position:absolute;left:14px;top:18px;width:488px;bottom:14px;
+         text-align:center;color:#fff;overflow:hidden}
+    .hdr {font-size:13.5px;font-weight:700;color:rgb(173,255,47);margin-top:7px;line-height:1.2}
+    .hdr2{font-size:11.5px;font-weight:700;color:rgb(173,255,47);margin-top:5px;line-height:1.2}
+    .btxt{font-size:13px;line-height:1.35}
+    .stxt{font-size:11px;line-height:1.28}
+    .dtxt{font-size:11px;line-height:1.28;color:rgba(255,255,255,.82)}
+
+    /* Nutrition panel — x:514–712 */
+    .pn{position:absolute;left:514px;top:16px;width:198px;bottom:10px}
+    .nhdr{font-size:9.5px;color:rgb(173,255,47);text-align:center;line-height:1.3;margin-bottom:3px}
+    .nhr {border:none;border-top:1px solid rgba(173,255,47,0.8);margin:2px 0 4px}
+    .irow{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:9px}
+
+    /* Right panel — x:730–1140 */
+    .pr{position:absolute;left:730px;top:0;width:410px;height:100%;
+         display:flex;flex-direction:column;align-items:center}
+    .rcat {font-size:20px;color:#fff;font-weight:500;margin-top:6px}
+    .rline{width:110px;height:2px;background:rgb(173,255,47);margin:8px 0}
+    .rname{font-size:90px;font-weight:700;color:rgb(255,255,255);
+            text-shadow:2px 2px 4px rgba(0,0,0,.6);line-height:1.05;
+            text-align:center;padding:0 8px;flex:1;
+            display:flex;align-items:center;justify-content:center}
+    .rmass{font-size:13px;color:#fff;font-weight:500;margin-bottom:46px}
+
+    /* Date strip — right edge */
+    .ds{position:absolute;right:0;top:9px;bottom:9px;width:38px;
+         background:rgba(255,255,255,.9);
+         display:flex;align-items:center;justify-content:center}
+    .dst{writing-mode:vertical-lr;transform:rotate(180deg);
+          font-size:9px;color:#1a1a1a;white-space:nowrap}
+
+    /* Barcode box — bottom-left */
+    .bc{position:absolute;left:14px;top:494px;width:161px;height:86px;
+         background:rgba(255,255,255,0.92);border-radius:4px;
+         display:flex;align-items:center;justify-content:center;
+         color:rgba(0,0,0,0.35);font-size:10px;letter-spacing:1.5px}
+  </style>
+</head>
+<body>
+<a class="back" href="index.html">← Всі етикетки</a>
+<p class="meta">04 mayo real · Харчовий ярлик</p>
+
+<div class="label">
+  <div class="bar-l"></div>
+  <div class="bar-t"></div>
+  <div class="bar-b"></div>
+  <div class="bar-i"></div>
+  <div class="sep"></div>
+
+  <!-- ── LEFT PANEL ── -->
+  <div class="pl">
+    <div class="hdr">СКЛАД:</div>
+    <div class="btxt">ВОДА ПИТНА, ОЛІЯ СОНЯШНИКОВА РАФІНОВАНА ДЕЗОДОРОВАНА, ЗАГУЩУВАЧ – МОДИФІКОВАНИЙ КУКУРУДЗЯНИЙ АБО КАРТОПЛЯНИЙ КРОХМАЛЬ, ЦУКОР БІЛИЙ, СІЛЬ КУХОННА, ЕМУЛЬГАТОР – МОДИФІКОВАНИЙ КУКУРУДЗЯНИЙ АБО КАРТОПЛЯНИЙ КРОХМАЛЬ, РЕГУЛЯТОРИ КИСЛОТНОСТІ – КИСЛОТА ОЦТОВА ХАРЧОВА, ЛИМОННА КИСЛОТА, СТАБІЛІЗАТОРИ – ГУАРОВА ТА КСАНТАНОВА КАМЕДІ, КОНСЕРВАНТ – СОРБАТ КАЛІЮ, АРОМАТИЗАТОР «ГІРЧИЦЯ», АНТИОКСИДАНТ - КАЛЬЦІЮ ДИНАТРІЮ EDTA, БАРВНИК ХАРЧОВИЙ - БЕТА-КАРОТИН. ПРОДУКТ МОЖЕ МІСТИТИ СЛІДИ СОЇ.</div>
+
+    <div class="hdr">УМОВИ ЗБЕРІГАННЯ:</div>
+    <div class="stxt">ЗА ТЕМПЕРАТУРИ <em>t</em> ВІД 0 °С ДО +24 °С В СУХИХ ВЕНТИЛЬОВАНИХ ПРИМІЩЕННЯХ З ВІДНОСНОЮ ВОЛОГІСТЮ ПОВІТРЯ НЕ БІЛЬШЕ 75%. ТЕРМІН ЗБЕРІГАННЯ ПІСЛЯ РОЗКРИТТЯ СПОЖИВЧОЇ ТАРИ ЗА ТЕМПЕРАТУРИ <em>t</em> ВІД 0 °С ДО +11 °С - 14 <em>d</em>(діб) В МЕЖАХ ЗАГАЛЬНОГО СТРОКУ ПРИДАТНОСТІ. НЕ ДОЗВОЛЕНО ЗБЕРІГАТИ РАЗОМ ІЗ ПРОДУКТАМИ, ЯКІ МАЮТЬ СПЕЦИФІЧНИЙ ЗАПАХ. НЕ ДОПУСКАТИ ВПЛИВУ ПРЯМИХ СОНЯЧНИХ ПРОМЕНІВ.</div>
+
+    <div class="hdr2">АДРЕСА ВИРОБНИЧИХ ПОТУЖНОСТЕЙ:</div>
+    <div class="stxt">ВУЛ. ПАРКОВА, 37/1, СЕЛИЩЕ ВЕЛИКОДОЛИНСЬКЕ, ОДЕСЬКИЙ РАЙОН, ОДЕСЬКА ОБЛАСТЬ, 67802, УКРАЇНА, тел.: +38(048)737-65-46.</div>
+
+    <div class="hdr2">ВИРОБНИК:</div>
+    <div class="stxt">ТОВ &quot;АККАРЖА ПЛЮС&quot;, ВУЛ. ШЕВЧЕНКА, 368, СЕЛИЩЕ ОВІДІОПОЛЬ, ОДЕСЬКИЙ РАЙОН, ОДЕСЬКА ОБЛАСТЬ, 67801, УКРАЇНА.</div>
+
+    <div class="hdr2">ВИГОТОВЛЕНО НА ЗАМОВЛЕННЯ:</div>
+    <div class="stxt">ТОВ &quot;ФУД ФЕСТИВАЛЬ&quot;, ТЕЛЕФОН ДЛЯ СКАРГ ТА ПРОПОЗИЦІЙ +38066-777-99-80.</div>
+    <div class="dtxt">Дата «Краще спожити до» та номер партії (L) вказані на етикетці.</div>
+  </div>
+
+  <!-- ── NUTRITION PANEL ── -->
+  <div class="pn">
+    <div class="nhdr">Поживна цінність на 100&nbsp;g(г) продукту</div>
+    <hr class="nhr">
+    <div style="padding:2px 3px 3px;background:rgba(255,255,255,.1);"><div style="font-size:9.5px;color:#fff;line-height:1.25;">Енергетична цінність (калорійність)</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">1236 kJ(кДж)/300 kcal(ккал)</div></div>
+<div style="padding:2px 3px 3px;"><div style="font-size:9.5px;color:#fff;line-height:1.25;">Жири</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">30,0 g(г)</div></div>
+<div style="padding:2px 3px 3px;background:rgba(255,255,255,.1);padding-left:10px;"><div style="font-size:9.5px;color:#fff;line-height:1.25;">з них насичені</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">3,9 g(г)</div></div>
+<div style="padding:2px 3px 3px;"><div style="font-size:9.5px;color:#fff;line-height:1.25;">Вуглеводи</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">7,4 g(г)</div></div>
+<div style="padding:2px 3px 3px;background:rgba(255,255,255,.1);padding-left:10px;"><div style="font-size:9.5px;color:#fff;line-height:1.25;">з них цукри</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">3,6 g(г)</div></div>
+<div style="padding:2px 3px 3px;"><div style="font-size:9.5px;color:#fff;line-height:1.25;">Білки</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">0,05 g(г)</div></div>
+<div style="padding:2px 3px 3px;background:rgba(255,255,255,.1);"><div style="font-size:9.5px;color:#fff;line-height:1.25;">Сіль</div><div style="font-size:9.5px;font-weight:700;color:#fff;text-align:right;">1,3 g(г)</div></div>
+
+    <div class="irow"><div title="Тидбайте сміття" style="background:#fff;border-radius:4px;padding:2px 3px;display:inline-flex;align-items:center;justify-content:center;"><img src="../icons/icon_trash.jpeg" alt="Тидбайте сміття" style="height:28px;width:auto;display:block;"></div>
+<div title="Придатний для контакту з їжею" style="background:#fff;border-radius:4px;padding:2px 3px;display:inline-flex;align-items:center;justify-content:center;"><img src="../icons/icon_foodsafe.png" alt="Придатний для контакту з їжею" style="height:28px;width:auto;display:block;"></div>
+<div title="PP 05 — полі­пропілен" style="background:#fff;border-radius:4px;padding:2px 3px;display:inline-flex;align-items:center;justify-content:center;"><img src="../icons/icon_pp05.png" alt="PP 05 — полі­пропілен" style="height:28px;width:auto;display:block;"></div>
+<div title="БЕЗ ГМО" style="background:#fff;border-radius:4px;padding:2px 3px;display:inline-flex;align-items:center;justify-content:center;"><img src="../icons/icon_bez_gmo.png" alt="БЕЗ ГМО" style="height:28px;width:auto;display:block;"></div>
+</div>
+  </div>
+
+  <!-- ── RIGHT PANEL ── -->
+  <div class="pr">
+    <div style="height:72px"></div>
+    <img src="../icons/logo_white.png" alt="Food Festival"
+         style="max-height:255px;max-width:310px;object-fit:contain;">
+    <div class="rcat">МАЙОНЕЗНИЙ СОУС</div>
+    <div class="rline"></div>
+    <div class="rname">РЕАЛ</div>
+    <div class="rmass">МАСА НЕТТО&nbsp;4900&nbsp;г&nbsp;<span style="font-size:22px;vertical-align:middle;line-height:0.9;font-weight:400">е</span></div>
+  </div>
+
+  <!-- ── DATE STRIP ── -->
+  <div class="ds">
+    <span class="dst">Дата «Краще спожити до» та номер партії (L)</span>
+  </div>
+
+  <!-- ── BARCODE ── -->
+  <div class="bc">ШТРИХКОД</div>
+</div>
+</body>
+</html>
