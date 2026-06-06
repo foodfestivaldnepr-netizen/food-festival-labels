@@ -9,7 +9,7 @@ Steps:
   4. Generate output_html/*.html — one label per product
   5. Generate output_html/index.html — navigation page
 """
-import os, sys, shutil, hashlib, html as H
+import os, sys, shutil, hashlib, html as H, random
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_labels import PRODUCTS, LOGO_PATH, load_logo_white
@@ -100,7 +100,25 @@ def get_icons(p):
 
 
 # ─────────────────────────────────────────────
-# 3.  CSS helpers
+# 3.  Background emoji texture per product
+# ─────────────────────────────────────────────
+BG_EMOJI = {
+    "01_sauce_bbq":            "🔥",
+    "02_ketchup_classic_5kg":  "🍅",
+    "03_mayo_67":              "🥚",
+    "04_mayo_real":            "🥚",
+    "05_tomato_pasta":         "🍅",
+    "06_ketchup_premium":      "🍅",
+    "07_ketchup_shashlik_830": "🍖",
+    "08_ketchup_shashlik_5kg": "🍖",
+    "09_sauce_cheese":         "🧀",
+    "10_mustard_american":     "🌿",
+    "11_ketchup_classic_830":  "🍅",
+}
+
+
+# ─────────────────────────────────────────────
+# 4.  CSS helpers
 # ─────────────────────────────────────────────
 def rgb(c):      return f"rgb({c[0]},{c[1]},{c[2]})"
 def rgba(c, a):  return f"rgba({c[0]},{c[1]},{c[2]},{a})"
@@ -178,6 +196,37 @@ def generate_html(p: dict) -> str:
             f'</div>\n'
         )
 
+    # Background emoji texture — large silhouettes placed without overlapping
+    emoji = BG_EMOJI.get(p["key"], "")
+    if emoji:
+        rng      = random.Random(hash(p["key"]) & 0xFFFFFFFF)
+        LW, LH   = 1178, 594
+        min_d2   = 310 ** 2        # min center-to-center distance squared
+        placed   = []
+        spans    = []
+        for _ in range(5):
+            # Seed an initial fallback then hunt for a non-overlapping spot
+            candidate  = (rng.uniform(0, LW), rng.uniform(0, LH))
+            best_score = 0
+            for _ in range(400):
+                cx, cy = rng.uniform(0, LW), rng.uniform(0, LH)
+                score = min((cx-px)**2 + (cy-py)**2 for px, py in placed) if placed else min_d2
+                if score >= min_d2:
+                    candidate = (cx, cy)
+                    break
+                if score > best_score:
+                    best_score, candidate = score, (cx, cy)
+            placed.append(candidate)
+            rot = rng.uniform(-35, 35)
+            sz  = rng.randint(250, 310)
+            spans.append(
+                f'<span style="left:{candidate[0]/LW*100:.1f}%;top:{candidate[1]/LH*100:.1f}%;'
+                f'font-size:{sz}px;transform:rotate({rot:.1f}deg)">{emoji}</span>'
+            )
+        bgtex_html = f'<div class="bgtex">{"".join(spans)}</div>'
+    else:
+        bgtex_html = ""
+
     ns = name_font_size(p["name"])
 
     return f"""<!DOCTYPE html>
@@ -199,8 +248,14 @@ def generate_html(p: dict) -> str:
     /* ── Label canvas ── */
     .label{{
       position:relative;width:1178px;height:594px;overflow:hidden;
+      isolation:isolate;
       {bg_css}
     }}
+
+    /* emoji texture background */
+    .bgtex{{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+            opacity:.12;filter:brightness(0) invert(1)}}
+    .bgtex span{{position:absolute;line-height:1;display:block}}
 
     /* decorative chrome */
     .bar-l{{position:absolute;left:0;top:0;width:6px;height:100%;background:{rgb(bar)}}}
@@ -254,6 +309,7 @@ def generate_html(p: dict) -> str:
 <p class="meta">{H.escape(p['key'].replace('_',' '))} · Харчовий ярлик</p>
 
 <div class="label">
+  {bgtex_html}
   <div class="bar-l"></div>
   <div class="bar-t"></div>
   <div class="bar-b"></div>

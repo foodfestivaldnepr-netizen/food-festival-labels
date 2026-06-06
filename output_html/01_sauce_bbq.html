@@ -17,8 +17,14 @@
     /* ── Label canvas ── */
     .label{
       position:relative;width:1178px;height:594px;overflow:hidden;
+      isolation:isolate;
       background:linear-gradient(90deg,rgba(100,0,18,0.59) 0%,rgba(100,0,18,0.08) 100%),rgb(25,0,4);
     }
+
+    /* emoji texture background */
+    .bgtex{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+            opacity:.12;filter:brightness(0) invert(1)}
+    .bgtex span{position:absolute;line-height:1;display:block}
 
     /* decorative chrome */
     .bar-l{position:absolute;left:0;top:0;width:6px;height:100%;background:rgb(100,0,18)}
@@ -72,6 +78,7 @@
 <p class="meta">01 sauce bbq · Харчовий ярлик</p>
 
 <div class="label">
+  <div class="bgtex"><span style="left:45.9%;top:7.9%;font-size:301px;transform:rotate(20.8deg)">🔥</span><span style="left:78.3%;top:27.5%;font-size:296px;transform:rotate(-2.8deg)">🔥</span><span style="left:0.6%;top:53.5%;font-size:261px;transform:rotate(-16.7deg)">🔥</span><span style="left:95.6%;top:75.0%;font-size:306px;transform:rotate(5.0deg)">🔥</span><span style="left:58.9%;top:92.4%;font-size:264px;transform:rotate(32.9deg)">🔥</span></div>
   <div class="bar-l"></div>
   <div class="bar-t"></div>
   <div class="bar-b"></div>

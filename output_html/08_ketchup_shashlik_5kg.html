@@ -17,8 +17,14 @@
     /* ── Label canvas ── */
     .label{
       position:relative;width:1178px;height:594px;overflow:hidden;
+      isolation:isolate;
       background:linear-gradient(90deg,rgba(145,18,75,0.59) 0%,rgba(145,18,75,0.08) 100%),rgb(36,4,18);
     }
+
+    /* emoji texture background */
+    .bgtex{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+            opacity:.12;filter:brightness(0) invert(1)}
+    .bgtex span{position:absolute;line-height:1;display:block}
 
     /* decorative chrome */
     .bar-l{position:absolute;left:0;top:0;width:6px;height:100%;background:rgb(145,18,75)}
@@ -72,6 +78,7 @@
 <p class="meta">08 ketchup shashlik 5kg · Харчовий ярлик</p>
 
 <div class="label">
+  <div class="bgtex"><span style="left:29.7%;top:44.9%;font-size:273px;transform:rotate(-18.4deg)">🍖</span><span style="left:68.9%;top:61.4%;font-size:251px;transform:rotate(-5.1deg)">🍖</span><span style="left:94.6%;top:73.4%;font-size:260px;transform:rotate(31.4deg)">🍖</span><span style="left:3.3%;top:12.5%;font-size:260px;transform:rotate(-19.5deg)">🍖</span><span style="left:82.9%;top:0.2%;font-size:270px;transform:rotate(8.8deg)">🍖</span></div>
   <div class="bar-l"></div>
   <div class="bar-t"></div>
   <div class="bar-b"></div>

@@ -17,8 +17,14 @@
     /* ── Label canvas ── */
     .label{
       position:relative;width:1178px;height:594px;overflow:hidden;
+      isolation:isolate;
       background:linear-gradient(90deg,rgba(100,175,30,0.59) 0%,rgba(100,175,30,0.08) 100%),rgb(25,43,7);
     }
+
+    /* emoji texture background */
+    .bgtex{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+            opacity:.12;filter:brightness(0) invert(1)}
+    .bgtex span{position:absolute;line-height:1;display:block}
 
     /* decorative chrome */
     .bar-l{position:absolute;left:0;top:0;width:6px;height:100%;background:rgb(100,175,30)}
@@ -72,6 +78,7 @@
 <p class="meta">04 mayo real · Харчовий ярлик</p>
 
 <div class="label">
+  <div class="bgtex"><span style="left:93.4%;top:37.3%;font-size:269px;transform:rotate(-17.9deg)">🥚</span><span style="left:41.9%;top:90.8%;font-size:278px;transform:rotate(9.7deg)">🥚</span><span style="left:8.9%;top:32.4%;font-size:281px;transform:rotate(-7.7deg)">🥚</span><span style="left:35.7%;top:12.0%;font-size:259px;transform:rotate(34.2deg)">🥚</span><span style="left:69.3%;top:14.3%;font-size:309px;transform:rotate(33.5deg)">🥚</span></div>
   <div class="bar-l"></div>
   <div class="bar-t"></div>
   <div class="bar-b"></div>

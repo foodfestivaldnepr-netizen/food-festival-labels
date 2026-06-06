@@ -17,8 +17,14 @@
     /* ── Label canvas ── */
     .label{
       position:relative;width:1178px;height:594px;overflow:hidden;
+      isolation:isolate;
       background:linear-gradient(90deg,rgba(185,15,15,0.59) 0%,rgba(185,15,15,0.08) 100%),rgb(46,3,3);
     }
+
+    /* emoji texture background */
+    .bgtex{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+            opacity:.12;filter:brightness(0) invert(1)}
+    .bgtex span{position:absolute;line-height:1;display:block}
 
     /* decorative chrome */
     .bar-l{position:absolute;left:0;top:0;width:6px;height:100%;background:rgb(185,15,15)}
@@ -72,6 +78,7 @@
 <p class="meta">02 ketchup classic 5kg · Харчовий ярлик</p>
 
 <div class="label">
+  <div class="bgtex"><span style="left:16.4%;top:2.4%;font-size:272px;transform:rotate(-17.7deg)">🍅</span><span style="left:78.4%;top:48.1%;font-size:258px;transform:rotate(25.8deg)">🍅</span><span style="left:52.7%;top:2.2%;font-size:254px;transform:rotate(14.6deg)">🍅</span><span style="left:39.5%;top:80.9%;font-size:255px;transform:rotate(-31.8deg)">🍅</span><span style="left:94.2%;top:5.8%;font-size:273px;transform:rotate(32.0deg)">🍅</span></div>
   <div class="bar-l"></div>
   <div class="bar-t"></div>
   <div class="bar-b"></div>
