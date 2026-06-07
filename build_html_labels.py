@@ -240,7 +240,8 @@ def generate_html(p: dict) -> str:
   <style>
     *{{box-sizing:border-box;margin:0;padding:0}}
     body{{background:#111;display:flex;flex-direction:column;align-items:center;min-height:100vh;
-          padding:20px 10px;font-family:'Ubuntu',Arial,sans-serif}}
+          padding:20px 10px;font-family:'Ubuntu',Arial,sans-serif;
+          min-width:1220px;overflow-x:auto}}
     p.meta{{color:#777;font-size:12px;margin-bottom:12px;letter-spacing:.4px}}
     a.back{{color:#888;font-size:12px;text-decoration:none;margin-bottom:14px;display:block}}
     a.back:hover{{color:#bbb}}
