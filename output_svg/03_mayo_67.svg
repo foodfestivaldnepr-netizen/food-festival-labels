@@ -29,11 +29,11 @@
 <!-- Emoji texture -->
 <g opacity="0.12" clip-path="url(#label-clip)"
    style="filter:brightness(0) invert(1)">
-  <text x="584" y="266" font-size="303" dominant-baseline="middle" transform="rotate(1.1 584 266)">🥚</text>
-  <text x="240" y="293" font-size="261" dominant-baseline="middle" transform="rotate(2.5 240 293)">🥚</text>
-  <text x="912" y="17" font-size="252" dominant-baseline="middle" transform="rotate(-32.0 912 17)">🥚</text>
-  <text x="1096" y="477" font-size="285" dominant-baseline="middle" transform="rotate(-22.6 1096 477)">🥚</text>
-  <text x="662" y="566" font-size="262" dominant-baseline="middle" transform="rotate(-5.4 662 566)">🥚</text>
+  <text x="489" y="246" font-size="275" dominant-baseline="middle" transform="rotate(12.7 489 246)">🥚</text>
+  <text x="236" y="513" font-size="265" dominant-baseline="middle" transform="rotate(5.2 236 513)">🥚</text>
+  <text x="819" y="372" font-size="266" dominant-baseline="middle" transform="rotate(-3.0 819 372)">🥚</text>
+  <text x="132" y="85" font-size="273" dominant-baseline="middle" transform="rotate(14.5 132 85)">🥚</text>
+  <text x="1165" y="79" font-size="258" dominant-baseline="middle" transform="rotate(28.7 1165 79)">🥚</text>
 </g>
 
 <!-- Decorative chrome -->
