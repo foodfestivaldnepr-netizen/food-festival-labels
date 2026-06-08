@@ -434,15 +434,12 @@ def generate_svg(p: dict, logo_size, logo_b64) -> str:
 <!-- Icons -->
 {ic}
 
-<!-- Date strip (right edge) — 2 rotated lines, right-aligned -->
+<!-- Date strip (right edge) — single rotated line, centred -->
 <rect x="{LW-48}" y="9" width="48" height="{LH-18}"
       fill="white" fill-opacity="0.9"/>
-<text x="{LW-12}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
+<text x="{LW-24}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
       fill="#1a1a1a" text-anchor="middle" dominant-baseline="middle"
-      transform="rotate(-90 {LW-12} {LH//2})">Дата «Краще спожити до»</text>
-<text x="{LW-27}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
-      fill="#1a1a1a" text-anchor="middle" dominant-baseline="middle"
-      transform="rotate(-90 {LW-27} {LH//2})">та номер партії (L)</text>
+      transform="rotate(-90 {LW-24} {LH//2})">Дата «Краще спожити до» та номер партії (L)</text>
 
 </svg>"""
 

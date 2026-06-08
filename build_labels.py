@@ -660,22 +660,15 @@ def draw_date_strip(base):
         [(strip_x, 9), (LW - 1, LH - 9)], fill=(255, 255, 255, 230))
     base.alpha_composite(strip)
 
-    lines   = ["Дата «Краще спожити до»", "та номер партії (L)"]
+    text    = "Дата «Краще спожити до» та номер партії (L)"
     font    = _pf(FONT_R, 9)
-    col_gap = 4
-    rendered = []
-    for text in lines:
-        tw_px   = tw(text, FONT_R, 9)
-        txt_img = Image.new("RGBA", (tw_px + 4, 14), (0, 0, 0, 0))
-        ImageDraw.Draw(txt_img).text((2, 1), text, font=font, fill=(30, 30, 30))
-        rendered.append(txt_img.rotate(90, expand=True))
-
-    total_col_w = sum(r.width for r in rendered) + col_gap * (len(rendered) - 1)
-    x = LW - 3 - total_col_w   # right-aligned, 3 px margin from edge
-    for rotated in rendered:
-        ry = (LH - rotated.height) // 2
-        base.paste(rotated, (x, ry), rotated)
-        x += rotated.width + col_gap
+    tw_px   = tw(text, FONT_R, 9)
+    txt_img = Image.new("RGBA", (tw_px + 4, 14), (0, 0, 0, 0))
+    ImageDraw.Draw(txt_img).text((2, 1), text, font=font, fill=(30, 30, 30))
+    rotated = txt_img.rotate(90, expand=True)
+    rx = strip_x + (strip_w - rotated.width) // 2
+    ry = (LH - rotated.height) // 2
+    base.paste(rotated, (rx, ry), rotated)
 
 # ── label generator ───────────────────────────────────────────────────────────
 
