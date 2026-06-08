@@ -50,7 +50,8 @@ PRODUCTS = [
         "output": "01_sauce_bbq.jpg",
     },
     {
-        "key": "02_ketchup_classic_5kg", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "КЛАСИЧНИЙ",
+        "key": "02_ketchup_classic_5kg", "category": "КЕТЧУП", "name": "КЛАСИЧНИЙ",
+        "sweetener_note": "з цукром та підсолоджувачем",
         "weight": "5000", "accent": (185, 15, 15), "accent2": (235, 65, 25),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -77,7 +78,9 @@ PRODUCTS = [
         "output": "02_ketchup_classic_5kg.jpg",
     },
     {
-        "key": "03_mayo_67", "category": "МАЙОНЕЗ", "name": "67% жиру ПРЕМІУМ",
+        "key": "03_mayo_67", "category": "МАЙОНЕЗ", "name": "ПРЕМІУМ",
+        "subtitle": "67% жиру",
+        "bold_wds": {'СУХИЙ', 'ЯЄЧНИЙ', 'ЖОВТОК', 'СОЇ'},
         "weight": "4900", "accent": (10, 75, 165), "accent2": (25, 150, 220),
         "nutrition": {"energy_kj": "2528", "energy_kcal": "614", "fat": "67,0",
                       "sat_fat": "8,7", "carbs": "3,0", "sugars": "2,5",
@@ -108,6 +111,7 @@ PRODUCTS = [
     {
         "key": "04_mayo_real", "category": "МАЙОНЕЗНИЙ СОУС", "name": "РЕАЛ",
         "subtitle": "30% жирності",
+        "bold_wds": {'СОЇ'},
         "weight": "4900", "accent": (100, 175, 30), "accent2": (173, 255, 47),
         "nutrition": {"energy_kj": "1236", "energy_kcal": "300", "fat": "30,0",
                       "sat_fat": "3,9", "carbs": "7,4", "sugars": "3,6",
@@ -190,7 +194,8 @@ PRODUCTS = [
         "output": "06_ketchup_premium.jpg",
     },
     {
-        "key": "07_ketchup_shashlik_830", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "ШАШЛИЧНИЙ",
+        "key": "07_ketchup_shashlik_830", "category": "КЕТЧУП", "name": "ШАШЛИЧНИЙ",
+        "sweetener_note": "з цукром та підсолоджувачем",
         "weight": "830", "accent": (145, 18, 75), "accent2": (215, 55, 125),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -217,7 +222,8 @@ PRODUCTS = [
         "output": "07_ketchup_shashlik_830.jpg",
     },
     {
-        "key": "08_ketchup_shashlik_5kg", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "ШАШЛИЧНИЙ",
+        "key": "08_ketchup_shashlik_5kg", "category": "КЕТЧУП", "name": "ШАШЛИЧНИЙ",
+        "sweetener_note": "з цукром та підсолоджувачем",
         "weight": "5000", "accent": (145, 18, 75), "accent2": (215, 55, 125),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -245,6 +251,7 @@ PRODUCTS = [
     },
     {
         "key": "09_sauce_cheese", "category": "СОУС", "name": "СИРНИЙ",
+        "bold_wds": {'СИРНИЙ', 'ПОРОШОК', '(МОЛОКО', 'ДЛЯ', 'СИРУ', '(МІСТИТЬ', 'МОЛОЧНІ', 'ПРОДУКТИ', 'ЛАКТОЗУ))'},
         "weight": "830", "accent": (215, 205, 0), "accent2": (255, 255, 0),
         "nutrition": {"energy_kj": "1587", "energy_kcal": "385", "fat": "40,0",
                       "sat_fat": "5,2", "carbs": "6,3", "sugars": "3,8",
@@ -253,7 +260,7 @@ PRODUCTS = [
             "ВОДА ПИТНА, ОЛІЯ СОНЯШНИКОВА РАФІНОВАНА ДЕЗОДОРОВАНА, ЦУКОР БІЛИЙ, "
             "ЗАГУЩУВАЧ - МОДИФІКОВАНИЙ КУКУРУДЗЯНИЙ АБО КАРТОПЛЯНИЙ КРОХМАЛЬ, "
             "СІЛЬ КУХОННА, ЕМУЛЬГАТОР - МОДИФІКОВАНИЙ КУКУРУДЗЯНИЙ АБО "
-            "КАРТОПЛЯНИЙ КРОХМАЛЬ, СИРНИЙ ПОРОШОК (0,5%)(МОЛОКО, СІЛЬ, ФЕРМЕНТ "
+            "КАРТОПЛЯНИЙ КРОХМАЛЬ, СИРНИЙ ПОРОШОК (0,5%) (МОЛОКО, СІЛЬ, ФЕРМЕНТ "
             "МІКРОБІОЛОГІЧНОГО ПОХОДЖЕННЯ, БАКТЕРІАЛЬНА ЗАКВАСКА ДЛЯ СИРУ ТИПУ "
             "ЧЕДДЕР) (МІСТИТЬ МОЛОЧНІ ПРОДУКТИ ТА ЛАКТОЗУ)), РЕГУЛЯТОРИ "
             "КИСЛОТНОСТІ - КИСЛОТА ОЦТОВА ХАРЧОВА, ЛИМОННА КИСЛОТА, "
@@ -276,6 +283,7 @@ PRODUCTS = [
     },
     {
         "key": "10_mustard_american", "category": "ГІРЧИЦЯ", "name": "АМЕРИКАНСЬКА",
+        "bold_wds": {'ПОРОШОК', 'ГІРЧИЦІ', 'БІЛОЇ'},
         "weight": "830", "accent": (162, 102, 0), "accent2": (228, 182, 28),
         "nutrition": {"energy_kj": "733", "energy_kcal": "174", "fat": "6,1",
                       "sat_fat": "0,5", "carbs": "22,5", "sugars": "17,0",
@@ -301,7 +309,8 @@ PRODUCTS = [
         "output": "10_mustard_american.jpg",
     },
     {
-        "key": "11_ketchup_classic_830", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "КЛАСИЧНИЙ",
+        "key": "11_ketchup_classic_830", "category": "КЕТЧУП", "name": "КЛАСИЧНИЙ",
+        "sweetener_note": "з цукром та підсолоджувачем",
         "weight": "830", "accent": (185, 15, 15), "accent2": (235, 65, 25),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -361,9 +370,9 @@ def load_icon(filename, target_h=62):
 
 def _default_icons(weight_str):
     if int(weight_str) >= 4000:
-        return ["icon_bez_gmo.png", "icon_pp05.png", "icon_foodsafe.png", "icon_trash.jpeg"]
-    return ["icon_bez_gmo.png", "icon_pet01.png", "icon_hdpe02.png",
-            "icon_foodsafe.png", "icon_trash.jpeg"]
+        return ["icon_foodsafe.png", "icon_trash.jpeg", "icon_pp05.png", "icon_bez_gmo.png"]
+    return ["icon_foodsafe.png", "icon_trash.jpeg", "icon_pet01.png", "icon_hdpe02.png",
+            "icon_bez_gmo.png"]
 
 def draw_icons(base, icon_files):
     if not icon_files:
@@ -478,7 +487,7 @@ def draw_left_panel(draw, p, a2):
                     clean = wd.rstrip('.,;:')
                     if bold_wds and clean in bold_wds:
                         word_data.append((wd, font_b))
-                    elif italic_wds and wd in italic_wds:
+                    elif italic_wds and clean in italic_wds:
                         word_data.append((wd, font_i))
                     else:
                         word_data.append((wd, font_r))
@@ -491,7 +500,7 @@ def draw_left_panel(draw, p, a2):
                 y += lh
 
     hdr("СКЛАД:", 14, gap_before=4)
-    body(p["ingredients"], 13, lh=18, bold_wds={'СОЇ'})
+    body(p["ingredients"], 13, lh=18, bold_wds=p.get("bold_wds"))
 
     hdr("УМОВИ ЗБЕРІГАННЯ:", 14)
     body(p["storage"], 11, lh=14, italic_wds={'t', 'd(діб)'})
@@ -580,13 +589,13 @@ def draw_right_panel(base, draw, logo_white, p, a2, nc):
     ow, oh   = logo.size
     logo_rs  = logo.resize((round(ow / oh * target_h), target_h), Image.LANCZOS)
     lx       = rcx - logo_rs.width // 2
-    base.paste(logo_rs, (lx, 22), logo_rs)
+    base.paste(logo_rs, (lx, 62), logo_rs)
 
     # Category — auto-size so long text fits in 400px
     cat_fs = 20
     while tw(p["category"], FONT_R, cat_fs) > 400 and cat_fs > 12:
         cat_fs -= 1
-    cat_y = 22 + target_h + 16
+    cat_y = 62 + target_h + 16
     cw    = tw(p["category"], FONT_R, cat_fs)
     draw.text((rcx - cw // 2, cat_y), p["category"],
               font=_pf(FONT_R, cat_fs), fill=(255, 255, 255))
@@ -608,16 +617,23 @@ def draw_right_panel(base, draw, logo_white, p, a2, nc):
     draw.text((name_x, name_y), p["name"],
               font=_pf(FONT_B, ns), fill=nc)
 
-    # Subtitle (optional — e.g. "30% жирності" for mayo РЕАЛ)
+    # Subtitle (optional — e.g. "30% жирності" / "67% жиру")
+    extra_y = name_y + ns + 8
     if p.get("subtitle"):
-        sub_y = name_y + ns + 8
-        sw    = tw(p["subtitle"], FONT_R, 22)
-        draw.text((rcx - sw // 2, sub_y), p["subtitle"],
+        sw = tw(p["subtitle"], FONT_R, 22)
+        draw.text((rcx - sw // 2, extra_y), p["subtitle"],
                   font=_pf(FONT_R, 22), fill=(*a2, 255))
+        extra_y += 22 + 6
 
-    # МАСА НЕТТО + е
+    # Sweetener note (optional — "з цукром та підсолоджувачем")
+    if p.get("sweetener_note"):
+        snw = tw(p["sweetener_note"], FONT_R, 18)
+        draw.text((rcx - snw // 2, extra_y), p["sweetener_note"],
+                  font=_pf(FONT_R, 18), fill=(*a2, 255))
+
+    # МАСА НЕТТО + е  (g = Latin, (г) = Cyrillic)
     mass_y   = LH - 50
-    mass_txt = f"МАСА НЕТТО {p['weight']} г"
+    mass_txt = f"МАСА НЕТТО {p['weight']} g(г)"
     mw_px    = tw(mass_txt, FONT_R, 13)
     draw.text((rcx - mw_px // 2, mass_y), mass_txt,
               font=_pf(FONT_R, 13), fill=(255, 255, 255))

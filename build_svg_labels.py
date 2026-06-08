@@ -72,7 +72,7 @@ def svgt_styled(cx, y, words, fs, fill_color, fill_a=1.0, bold_wds=None, italic_
         clean   = wd.rstrip('.,;:')
         if bold_wds and clean in bold_wds:
             parts.append(f'<tspan font-weight="bold">{escaped}</tspan>')
-        elif italic_wds and wd in italic_wds:
+        elif italic_wds and clean in italic_wds:
             parts.append(f'<tspan font-style="italic">{escaped}</tspan>')
         else:
             parts.append(escaped)
@@ -134,9 +134,9 @@ def _load_icon_b64(filename, target_h=62):
 
 def _default_icons_svg(weight_str):
     if int(weight_str) >= 4000:
-        return ["icon_bez_gmo.png", "icon_pp05.png", "icon_foodsafe.png", "icon_trash.jpeg"]
-    return ["icon_bez_gmo.png", "icon_pet01.png", "icon_hdpe02.png",
-            "icon_foodsafe.png", "icon_trash.jpeg"]
+        return ["icon_foodsafe.png", "icon_trash.jpeg", "icon_pp05.png", "icon_bez_gmo.png"]
+    return ["icon_foodsafe.png", "icon_trash.jpeg", "icon_pet01.png", "icon_hdpe02.png",
+            "icon_bez_gmo.png"]
 
 def icons_layer(p):
     icon_files = p.get("icons", _default_icons_svg(p["weight"]))
@@ -221,7 +221,7 @@ def left_panel(p, a2):
         nonlocal y; y += n
 
     header("СКЛАД:", 13.5, gap_before=4)
-    body(p["ingredients"], 13, lh=18, bold_wds={'СОЇ'})
+    body(p["ingredients"], 13, lh=18, bold_wds=p.get("bold_wds"))
 
     header("УМОВИ ЗБЕРІГАННЯ:", 13.5)
     body(p["storage"], 11, lh=14, italic_wds={'t', 'd(діб)'})
@@ -304,14 +304,14 @@ def right_panel(p, a2, nc, logo_size, logo_b64):
 
     # Logo centred
     lx = rcx - lw_img // 2
-    out.append(f'<image x="{lx}" y="22" width="{lw_img}" height="{lh_img}" '
+    out.append(f'<image x="{lx}" y="62" width="{lw_img}" height="{lh_img}" '
                f'href="{logo_b64}"/>')
 
     # Category — auto-size so long text fits in 400px
     cat_fs = 20
     while text_width(p["category"], FONT_R, cat_fs) > 400 and cat_fs > 12:
         cat_fs -= 1
-    cat_y = 22 + lh_img + 16
+    cat_y = 62 + lh_img + 16
     out.append(svgt(rcx, cat_y, p["category"], cat_fs, "#ffffff", anchor="middle"))
 
     # Accent line
@@ -328,17 +328,21 @@ def right_panel(p, a2, nc, logo_size, logo_b64):
     out.append(svgt(rcx, name_top_y, p["name"], ns, rgb(nc),
                     bold=True, anchor="middle"))
 
-    # Subtitle (optional — e.g. "30% жирності" for mayo РЕАЛ)
+    # Subtitle (optional — e.g. "30% жирності" / "67% жиру")
+    extra_y = name_top_y + ns + 8
     if p.get("subtitle"):
-        sub_y = name_top_y + ns + 8
-        out.append(svgt(rcx, sub_y, p["subtitle"], 22, rgb(a2), anchor="middle"))
+        out.append(svgt(rcx, extra_y, p["subtitle"], 22, rgb(a2), anchor="middle"))
+        extra_y += 22 + 6
 
-    # МАСА НЕТТО + е
+    # Sweetener note (optional — "з цукром та підсолоджувачем")
+    if p.get("sweetener_note"):
+        out.append(svgt(rcx, extra_y, p["sweetener_note"], 18, rgb(a2), anchor="middle"))
+
+    # МАСА НЕТТО + е  (g = Latin, (г) = Cyrillic)
     mass_y = LH - 50
-    out.append(svgt(rcx, mass_y, f"МАСА НЕТТО {p['weight']} г", 13,
+    out.append(svgt(rcx, mass_y, f"МАСА НЕТТО {p['weight']} g(г)", 13,
                     "#ffffff", anchor="middle"))
-    # "е" (estimate symbol) slightly larger, appended to the right
-    mw = text_width(f"МАСА НЕТТО {p['weight']} г", FONT_R, 13)
+    mw = text_width(f"МАСА НЕТТО {p['weight']} g(г)", FONT_R, 13)
     out.append(svgt(rcx + mw // 2 + 4, mass_y - 6, "е", 22, "#ffffff"))
 
     return "\n".join(out)
