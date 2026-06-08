@@ -11,6 +11,7 @@ import os
 BASE       = os.path.dirname(__file__)
 LOGO_PATH  = os.path.join(BASE, "food festival logo.png")
 OUTPUT_DIR = os.path.join(BASE, "output_labels")
+ICONS_DIR  = os.path.join(BASE, "icons")
 
 FONT_B = "/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf"
 FONT_R = "/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf"
@@ -336,6 +337,46 @@ def load_logo_white(logo_path):
     arr[~white, :3]   = 255
     return Image.fromarray(arr, "RGBA")
 
+# ── icon helpers ─────────────────────────────────────────────────────────────
+
+_icon_cache: dict = {}
+
+def load_icon(filename, target_h=62):
+    key = (filename, target_h)
+    if key in _icon_cache:
+        return _icon_cache[key]
+    path = os.path.join(ICONS_DIR, filename)
+    img  = Image.open(path).convert("RGBA")
+    arr  = np.array(img)
+    white = (arr[:, :, 0] > 215) & (arr[:, :, 1] > 215) & (arr[:, :, 2] > 215)
+    arr[white,   3]  = 0      # white bg → transparent
+    arr[~white, :3]  = 255    # dark content → white
+    img  = Image.fromarray(arr, "RGBA")
+    ow, oh = img.size
+    result = img.resize((round(ow / oh * target_h), target_h), Image.LANCZOS)
+    _icon_cache[key] = result
+    return result
+
+def _default_icons(weight_str):
+    plastic = "icon_hdpe02.png" if int(weight_str) >= 4000 else "icon_pp05.png"
+    return ["icon_bez_gmo.png", plastic, "icon_foodsafe.png", "icon_trash.jpeg"]
+
+def draw_icons(base, icon_files):
+    if not icon_files:
+        return
+    target_h = 62
+    icons    = [load_icon(f, target_h) for f in icon_files]
+    # Horizontal strip between barcode (ends x=175) and nutrition panel (x=514)
+    ax1, ax2 = 185, 510
+    ay1, ay2 = 492, 582
+    spacing  = 10
+    total_w  = sum(ic.width for ic in icons) + spacing * (len(icons) - 1)
+    x = ax1 + (ax2 - ax1 - total_w) // 2
+    y = ay1 + (ay2 - ay1 - target_h) // 2
+    for ic in icons:
+        base.paste(ic, (x, y), ic)
+        x += ic.width + spacing
+
 # ── font / text helpers ───────────────────────────────────────────────────────
 
 _font_cache: dict = {}
@@ -558,7 +599,8 @@ def draw_barcode(base, draw):
               font=_pf(FONT_R, 10), fill=(0, 0, 0, 90))
 
 def draw_date_strip(base):
-    strip_x = LW - 38
+    strip_w = 48
+    strip_x = LW - strip_w
     strip   = Image.new("RGBA", (LW, LH), (0, 0, 0, 0))
     ImageDraw.Draw(strip).rectangle(
         [(strip_x, 9), (LW - 1, LH - 9)], fill=(255, 255, 255, 230))
@@ -570,7 +612,7 @@ def draw_date_strip(base):
     txt_img = Image.new("RGBA", (tw_px + 4, 16), (0, 0, 0, 0))
     ImageDraw.Draw(txt_img).text((2, 2), text, font=font, fill=(30, 30, 30))
     rotated = txt_img.rotate(90, expand=True)
-    rx = strip_x + (38 - rotated.width) // 2
+    rx = strip_x + (strip_w - rotated.width) // 2
     ry = (LH - rotated.height) // 2
     base.paste(rotated, (rx, ry), rotated)
 
@@ -587,6 +629,7 @@ def generate_label(p, logo_white):
     draw_nutrition_panel(base, draw, p, a2)
     draw_right_panel(base, draw, logo_white, p, a2, nc)
     draw_barcode(base, draw)
+    draw_icons(base, p.get("icons", _default_icons(p["weight"])))
     draw_date_strip(base)
 
     out_path = os.path.join(OUTPUT_DIR, p["output"])

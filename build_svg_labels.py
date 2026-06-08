@@ -15,8 +15,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_labels import PRODUCTS, LOGO_PATH, load_logo_white
 from build_html_labels import BG_EMOJI
 
-BASE    = os.path.dirname(os.path.abspath(__file__))
-SVG_DIR = os.path.join(BASE, "output_svg")
+BASE      = os.path.dirname(os.path.abspath(__file__))
+SVG_DIR   = os.path.join(BASE, "output_svg")
+ICONS_DIR = os.path.join(BASE, "icons")
 
 FONT_B = "/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf"
 FONT_R = "/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf"
@@ -83,6 +84,54 @@ def load_logo_b64(max_w=290, max_h=200):
     img.save(buf, "PNG")
     b64 = base64.b64encode(buf.getvalue()).decode()
     return img.size, f"data:image/png;base64,{b64}"
+
+# ── icon helpers ─────────────────────────────────────────────────────────────
+
+_icon_cache_svg: dict = {}
+
+def _load_icon_b64(filename, target_h=62):
+    if filename in _icon_cache_svg:
+        return _icon_cache_svg[filename]
+    from PIL import Image
+    import numpy as np
+    path = os.path.join(ICONS_DIR, filename)
+    img  = Image.open(path).convert("RGBA")
+    arr  = np.array(img)
+    white = (arr[:,:,0] > 215) & (arr[:,:,1] > 215) & (arr[:,:,2] > 215)
+    arr[white,   3]  = 0
+    arr[~white, :3]  = 255
+    img  = Image.fromarray(arr, "RGBA")
+    ow, oh = img.size
+    nw  = round(ow / oh * target_h)
+    img = img.resize((nw, target_h), Image.LANCZOS)
+    buf = io.BytesIO()
+    img.save(buf, "PNG")
+    b64 = base64.b64encode(buf.getvalue()).decode()
+    result = (nw, target_h, f"data:image/png;base64,{b64}")
+    _icon_cache_svg[filename] = result
+    return result
+
+def _default_icons_svg(weight_str):
+    plastic = "icon_hdpe02.png" if int(weight_str) >= 4000 else "icon_pp05.png"
+    return ["icon_bez_gmo.png", plastic, "icon_foodsafe.png", "icon_trash.jpeg"]
+
+def icons_layer(p):
+    icon_files = p.get("icons", _default_icons_svg(p["weight"]))
+    if not icon_files:
+        return ""
+    target_h = 62
+    loaded   = [_load_icon_b64(f, target_h) for f in icon_files]
+    ax1, ax2 = 185, 510
+    ay1, ay2 = 492, 582
+    spacing  = 10
+    total_w  = sum(iw for iw, _, _ in loaded) + spacing * (len(loaded) - 1)
+    x = ax1 + (ax2 - ax1 - total_w) // 2
+    y = ay1 + (ay2 - ay1 - target_h) // 2
+    parts = []
+    for iw, ih, b64 in loaded:
+        parts.append(f'<image x="{x}" y="{y}" width="{iw}" height="{ih}" href="{b64}"/>')
+        x += iw + spacing
+    return "\n".join(parts)
 
 # ── emoji background ──────────────────────────────────────────────────────────
 
@@ -278,6 +327,7 @@ def generate_svg(p: dict, logo_size, logo_b64) -> str:
     np_ = nutrition_panel(p, a2)
     rp  = right_panel(p, a2, nc, logo_size, logo_b64)
     em  = emoji_layer(p["key"])
+    ic  = icons_layer(p)
 
     # Wrap each panel's elements in a clip group
     def clip(inner, clip_id):
@@ -339,12 +389,15 @@ def generate_svg(p: dict, logo_size, logo_b64) -> str:
       fill="black" fill-opacity="0.35" text-anchor="middle"
       letter-spacing="1.5">ШТРИХКОД</text>
 
+<!-- Icons -->
+{ic}
+
 <!-- Date strip (right edge) -->
-<rect x="{LW-38}" y="9" width="38" height="{LH-18}"
+<rect x="{LW-48}" y="9" width="48" height="{LH-18}"
       fill="white" fill-opacity="0.9"/>
-<text x="{LW-19}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
+<text x="{LW-24}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
       fill="#1a1a1a" text-anchor="middle" dominant-baseline="middle"
-      transform="rotate(-90 {LW-19} {LH//2})">Дата «Краще спожити до» та номер партії (L)</text>
+      transform="rotate(-90 {LW-24} {LH//2})">Дата «Краще спожити до» та номер партії (L)</text>
 
 </svg>"""
 
