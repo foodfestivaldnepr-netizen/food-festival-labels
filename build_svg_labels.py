@@ -21,6 +21,7 @@ ICONS_DIR = os.path.join(BASE, "icons")
 
 FONT_B = "/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf"
 FONT_R = "/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf"
+FONT_I = "/usr/share/fonts/truetype/ubuntu/Ubuntu-RI.ttf"
 
 LW, LH = 1178, 594  # label pixel dimensions
 
@@ -60,6 +61,26 @@ def wrap(text, path, size, max_w):
     if line:
         lines.append(line)
     return lines
+
+def svgt_styled(cx, y, words, fs, fill_color, fill_a=1.0, bold_wds=None, italic_wds=None):
+    """SVG <text> with per-word <tspan> bold/italic styling, centered at cx."""
+    baseline_y = y + fs * 0.78
+    fop = f' fill-opacity="{fill_a}"' if fill_a < 1.0 else ""
+    parts = []
+    for wd in words:
+        escaped = H.escape(wd)
+        clean   = wd.rstrip('.,;:')
+        if bold_wds and clean in bold_wds:
+            parts.append(f'<tspan font-weight="bold">{escaped}</tspan>')
+        elif italic_wds and wd in italic_wds:
+            parts.append(f'<tspan font-style="italic">{escaped}</tspan>')
+        else:
+            parts.append(escaped)
+    content = ' '.join(parts)
+    return (f'<text x="{cx:.1f}" y="{baseline_y:.1f}" '
+            f'font-family="Ubuntu,sans-serif" font-size="{fs}" '
+            f'fill="{fill_color}"{fop} text-anchor="middle">{content}</text>')
+
 
 def svgt(x, y, text, fs, fill_color, fill_a=1.0,
          bold=False, anchor="start", letter_spacing=None,
@@ -112,19 +133,22 @@ def _load_icon_b64(filename, target_h=62):
     return result
 
 def _default_icons_svg(weight_str):
-    plastic = "icon_hdpe02.png" if int(weight_str) >= 4000 else "icon_pp05.png"
-    return ["icon_bez_gmo.png", plastic, "icon_foodsafe.png", "icon_trash.jpeg"]
+    if int(weight_str) >= 4000:
+        return ["icon_bez_gmo.png", "icon_pp05.png", "icon_foodsafe.png", "icon_trash.jpeg"]
+    return ["icon_bez_gmo.png", "icon_pet01.png", "icon_hdpe02.png",
+            "icon_foodsafe.png", "icon_trash.jpeg"]
 
 def icons_layer(p):
     icon_files = p.get("icons", _default_icons_svg(p["weight"]))
     if not icon_files:
         return ""
-    target_h = 62
+    n        = len(icon_files)
+    target_h = 52 if n >= 5 else 62
+    spacing  = 7  if n >= 5 else 10
     loaded   = [_load_icon_b64(f, target_h) for f in icon_files]
     ax1, ax2 = 185, 510
     ay1, ay2 = 492, 582
-    spacing  = 10
-    total_w  = sum(iw for iw, _, _ in loaded) + spacing * (len(loaded) - 1)
+    total_w  = sum(iw for iw, _, _ in loaded) + spacing * (n - 1)
     x = ax1 + (ax2 - ax1 - total_w) // 2
     y = ay1 + (ay2 - ay1 - target_h) // 2
     parts = []
@@ -179,22 +203,28 @@ def left_panel(p, a2):
         out.append(svgt(cx, y, text, fs, rgb(a2), bold=True, anchor="middle"))
         y += fs + 3
 
-    def body(text, fs=11, lh=None, font=FONT_R, alpha=1.0):
+    def body(text, fs=11, lh=None, font=FONT_R, alpha=1.0,
+             bold_wds=None, italic_wds=None):
         nonlocal y
         if lh is None:
             lh = round(fs * 1.35)
         for line in wrap(text, font, int(fs), pw):
-            out.append(svgt(cx, y, line, fs, "#ffffff", fill_a=alpha, anchor="middle"))
+            if bold_wds or italic_wds:
+                out.append(svgt_styled(cx, y, line.split(), fs, "#ffffff",
+                                       fill_a=alpha, bold_wds=bold_wds,
+                                       italic_wds=italic_wds))
+            else:
+                out.append(svgt(cx, y, line, fs, "#ffffff", fill_a=alpha, anchor="middle"))
             y += lh
 
     def gap(n=5):
         nonlocal y; y += n
 
     header("СКЛАД:", 13.5, gap_before=4)
-    body(p["ingredients"], 13, lh=18)
+    body(p["ingredients"], 13, lh=18, bold_wds={'СОЇ'})
 
     header("УМОВИ ЗБЕРІГАННЯ:", 13.5)
-    body(p["storage"], 11, lh=14)
+    body(p["storage"], 11, lh=14, italic_wds={'t', 'd(діб)'})
 
     header("АДРЕСА ВИРОБНИЧИХ ПОТУЖНОСТЕЙ:", 11.5, gap_before=5)
     body(p["address"], 11, lh=14)
@@ -277,12 +307,15 @@ def right_panel(p, a2, nc, logo_size, logo_b64):
     out.append(f'<image x="{lx}" y="22" width="{lw_img}" height="{lh_img}" '
                f'href="{logo_b64}"/>')
 
-    # Category
+    # Category — auto-size so long text fits in 400px
+    cat_fs = 20
+    while text_width(p["category"], FONT_R, cat_fs) > 400 and cat_fs > 12:
+        cat_fs -= 1
     cat_y = 22 + lh_img + 16
-    out.append(svgt(rcx, cat_y, p["category"], 20, "#ffffff", anchor="middle"))
+    out.append(svgt(rcx, cat_y, p["category"], cat_fs, "#ffffff", anchor="middle"))
 
     # Accent line
-    line_y = cat_y + 22
+    line_y = cat_y + cat_fs + 4
     out.append(f'<rect x="{rcx-55}" y="{line_y}" width="110" height="2" '
                f'{fill_attr(a2)}/>')
 
@@ -294,6 +327,11 @@ def right_panel(p, a2, nc, logo_size, logo_b64):
     name_top_y    = name_area_mid - ns // 2
     out.append(svgt(rcx, name_top_y, p["name"], ns, rgb(nc),
                     bold=True, anchor="middle"))
+
+    # Subtitle (optional — e.g. "30% жирності" for mayo РЕАЛ)
+    if p.get("subtitle"):
+        sub_y = name_top_y + ns + 8
+        out.append(svgt(rcx, sub_y, p["subtitle"], 22, rgb(a2), anchor="middle"))
 
     # МАСА НЕТТО + е
     mass_y = LH - 50
@@ -392,12 +430,15 @@ def generate_svg(p: dict, logo_size, logo_b64) -> str:
 <!-- Icons -->
 {ic}
 
-<!-- Date strip (right edge) -->
+<!-- Date strip (right edge) — 2 rotated lines, right-aligned -->
 <rect x="{LW-48}" y="9" width="48" height="{LH-18}"
       fill="white" fill-opacity="0.9"/>
-<text x="{LW-24}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
+<text x="{LW-12}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
       fill="#1a1a1a" text-anchor="middle" dominant-baseline="middle"
-      transform="rotate(-90 {LW-24} {LH//2})">Дата «Краще спожити до» та номер партії (L)</text>
+      transform="rotate(-90 {LW-12} {LH//2})">Дата «Краще спожити до»</text>
+<text x="{LW-27}" y="{LH//2}" font-family="Ubuntu,sans-serif" font-size="9"
+      fill="#1a1a1a" text-anchor="middle" dominant-baseline="middle"
+      transform="rotate(-90 {LW-27} {LH//2})">та номер партії (L)</text>
 
 </svg>"""
 

@@ -15,6 +15,7 @@ ICONS_DIR  = os.path.join(BASE, "icons")
 
 FONT_B = "/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf"
 FONT_R = "/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf"
+FONT_I = "/usr/share/fonts/truetype/ubuntu/Ubuntu-RI.ttf"
 
 LW, LH = 1178, 594
 
@@ -49,7 +50,7 @@ PRODUCTS = [
         "output": "01_sauce_bbq.jpg",
     },
     {
-        "key": "02_ketchup_classic_5kg", "category": "КЕТЧУП", "name": "КЛАСИЧНИЙ",
+        "key": "02_ketchup_classic_5kg", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "КЛАСИЧНИЙ",
         "weight": "5000", "accent": (185, 15, 15), "accent2": (235, 65, 25),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -106,6 +107,7 @@ PRODUCTS = [
     },
     {
         "key": "04_mayo_real", "category": "МАЙОНЕЗНИЙ СОУС", "name": "РЕАЛ",
+        "subtitle": "30% жирності",
         "weight": "4900", "accent": (100, 175, 30), "accent2": (173, 255, 47),
         "nutrition": {"energy_kj": "1236", "energy_kcal": "300", "fat": "30,0",
                       "sat_fat": "3,9", "carbs": "7,4", "sugars": "3,6",
@@ -188,7 +190,7 @@ PRODUCTS = [
         "output": "06_ketchup_premium.jpg",
     },
     {
-        "key": "07_ketchup_shashlik_830", "category": "КЕТЧУП", "name": "ШАШЛИЧНИЙ",
+        "key": "07_ketchup_shashlik_830", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "ШАШЛИЧНИЙ",
         "weight": "830", "accent": (145, 18, 75), "accent2": (215, 55, 125),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -215,7 +217,7 @@ PRODUCTS = [
         "output": "07_ketchup_shashlik_830.jpg",
     },
     {
-        "key": "08_ketchup_shashlik_5kg", "category": "КЕТЧУП", "name": "ШАШЛИЧНИЙ",
+        "key": "08_ketchup_shashlik_5kg", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "ШАШЛИЧНИЙ",
         "weight": "5000", "accent": (145, 18, 75), "accent2": (215, 55, 125),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -299,7 +301,7 @@ PRODUCTS = [
         "output": "10_mustard_american.jpg",
     },
     {
-        "key": "11_ketchup_classic_830", "category": "КЕТЧУП", "name": "КЛАСИЧНИЙ",
+        "key": "11_ketchup_classic_830", "category": "КЕТЧУП з цукром та підсолоджувачем", "name": "КЛАСИЧНИЙ",
         "weight": "830", "accent": (185, 15, 15), "accent2": (235, 65, 25),
         "nutrition": {"energy_kj": "200", "energy_kcal": "47", "fat": "0,1",
                       "sat_fat": "0,0", "carbs": "10,8", "sugars": "4,5",
@@ -358,19 +360,21 @@ def load_icon(filename, target_h=62):
     return result
 
 def _default_icons(weight_str):
-    plastic = "icon_hdpe02.png" if int(weight_str) >= 4000 else "icon_pp05.png"
-    return ["icon_bez_gmo.png", plastic, "icon_foodsafe.png", "icon_trash.jpeg"]
+    if int(weight_str) >= 4000:
+        return ["icon_bez_gmo.png", "icon_pp05.png", "icon_foodsafe.png", "icon_trash.jpeg"]
+    return ["icon_bez_gmo.png", "icon_pet01.png", "icon_hdpe02.png",
+            "icon_foodsafe.png", "icon_trash.jpeg"]
 
 def draw_icons(base, icon_files):
     if not icon_files:
         return
-    target_h = 62
+    n        = len(icon_files)
+    target_h = 52 if n >= 5 else 62
+    spacing  = 7  if n >= 5 else 10
     icons    = [load_icon(f, target_h) for f in icon_files]
-    # Horizontal strip between barcode (ends x=175) and nutrition panel (x=514)
     ax1, ax2 = 185, 510
     ay1, ay2 = 492, 582
-    spacing  = 10
-    total_w  = sum(ic.width for ic in icons) + spacing * (len(icons) - 1)
+    total_w  = sum(ic.width for ic in icons) + spacing * (n - 1)
     x = ax1 + (ax2 - ax1 - total_w) // 2
     y = ay1 + (ay2 - ay1 - target_h) // 2
     for ic in icons:
@@ -452,21 +456,45 @@ def draw_left_panel(draw, p, a2):
         draw.text((cx - w // 2, y), text, font=_pf(FONT_B, fs), fill=a2)
         y += fs + 3
 
-    def body(text, fs=11, lh=None, alpha=255):
+    def body(text, fs=11, lh=None, alpha=255, bold_wds=None, italic_wds=None):
         nonlocal y
         if lh is None:
             lh = round(fs * 1.35)
-        col = (255, 255, 255, alpha)
-        for line in wrap(text, FONT_R, fs, pw):
-            w = tw(line, FONT_R, fs)
-            draw.text((cx - w // 2, y), line, font=_pf(FONT_R, fs), fill=col)
-            y += lh
+        col    = (255, 255, 255, alpha)
+        font_r = _pf(FONT_R, fs)
+        if bold_wds is None and italic_wds is None:
+            for line in wrap(text, FONT_R, fs, pw):
+                w = tw(line, FONT_R, fs)
+                draw.text((cx - w // 2, y), line, font=font_r, fill=col)
+                y += lh
+        else:
+            font_b = _pf(FONT_B, fs) if bold_wds   else font_r
+            font_i = _pf(FONT_I, fs) if italic_wds else font_r
+            sp_w   = font_r.getlength(' ')
+            for line in wrap(text, FONT_R, fs, pw):
+                words     = line.split()
+                word_data = []
+                for wd in words:
+                    clean = wd.rstrip('.,;:')
+                    if bold_wds and clean in bold_wds:
+                        word_data.append((wd, font_b))
+                    elif italic_wds and wd in italic_wds:
+                        word_data.append((wd, font_i))
+                    else:
+                        word_data.append((wd, font_r))
+                total_w = (sum(f.getlength(wd) for wd, f in word_data)
+                           + sp_w * (len(word_data) - 1))
+                fx = cx - total_w / 2
+                for wd, f in word_data:
+                    draw.text((int(fx), y), wd, font=f, fill=col)
+                    fx += f.getlength(wd) + sp_w
+                y += lh
 
     hdr("СКЛАД:", 14, gap_before=4)
-    body(p["ingredients"], 13, lh=18)
+    body(p["ingredients"], 13, lh=18, bold_wds={'СОЇ'})
 
     hdr("УМОВИ ЗБЕРІГАННЯ:", 14)
-    body(p["storage"], 11, lh=14)
+    body(p["storage"], 11, lh=14, italic_wds={'t', 'd(діб)'})
 
     hdr("АДРЕСА ВИРОБНИЧИХ ПОТУЖНОСТЕЙ:", 12, gap_before=5)
     body(p["address"], 11, lh=14)
@@ -554,14 +582,17 @@ def draw_right_panel(base, draw, logo_white, p, a2, nc):
     lx       = rcx - logo_rs.width // 2
     base.paste(logo_rs, (lx, 22), logo_rs)
 
-    # Category
+    # Category — auto-size so long text fits in 400px
+    cat_fs = 20
+    while tw(p["category"], FONT_R, cat_fs) > 400 and cat_fs > 12:
+        cat_fs -= 1
     cat_y = 22 + target_h + 16
-    cw    = tw(p["category"], FONT_R, 20)
+    cw    = tw(p["category"], FONT_R, cat_fs)
     draw.text((rcx - cw // 2, cat_y), p["category"],
-              font=_pf(FONT_R, 20), fill=(255, 255, 255))
+              font=_pf(FONT_R, cat_fs), fill=(255, 255, 255))
 
     # Accent line
-    line_y = cat_y + 22
+    line_y = cat_y + cat_fs + 4
     draw.rectangle([(rcx - 55, line_y), (rcx + 55, line_y + 2)], fill=(*a2, 220))
 
     # Product name — vertically centred between accent line and mass row
@@ -576,6 +607,13 @@ def draw_right_panel(base, draw, logo_white, p, a2, nc):
               font=_pf(FONT_B, ns), fill=(0, 0, 0, 130))
     draw.text((name_x, name_y), p["name"],
               font=_pf(FONT_B, ns), fill=nc)
+
+    # Subtitle (optional — e.g. "30% жирності" for mayo РЕАЛ)
+    if p.get("subtitle"):
+        sub_y = name_y + ns + 8
+        sw    = tw(p["subtitle"], FONT_R, 22)
+        draw.text((rcx - sw // 2, sub_y), p["subtitle"],
+                  font=_pf(FONT_R, 22), fill=(*a2, 255))
 
     # МАСА НЕТТО + е
     mass_y   = LH - 50
@@ -606,15 +644,22 @@ def draw_date_strip(base):
         [(strip_x, 9), (LW - 1, LH - 9)], fill=(255, 255, 255, 230))
     base.alpha_composite(strip)
 
-    text    = "Дата «Краще спожити до» та номер партії (L)"
+    lines   = ["Дата «Краще спожити до»", "та номер партії (L)"]
     font    = _pf(FONT_R, 9)
-    tw_px   = tw(text, FONT_R, 9)
-    txt_img = Image.new("RGBA", (tw_px + 4, 16), (0, 0, 0, 0))
-    ImageDraw.Draw(txt_img).text((2, 2), text, font=font, fill=(30, 30, 30))
-    rotated = txt_img.rotate(90, expand=True)
-    rx = strip_x + (strip_w - rotated.width) // 2
-    ry = (LH - rotated.height) // 2
-    base.paste(rotated, (rx, ry), rotated)
+    col_gap = 4
+    rendered = []
+    for text in lines:
+        tw_px   = tw(text, FONT_R, 9)
+        txt_img = Image.new("RGBA", (tw_px + 4, 14), (0, 0, 0, 0))
+        ImageDraw.Draw(txt_img).text((2, 1), text, font=font, fill=(30, 30, 30))
+        rendered.append(txt_img.rotate(90, expand=True))
+
+    total_col_w = sum(r.width for r in rendered) + col_gap * (len(rendered) - 1)
+    x = LW - 3 - total_col_w   # right-aligned, 3 px margin from edge
+    for rotated in rendered:
+        ry = (LH - rotated.height) // 2
+        base.paste(rotated, (x, ry), rotated)
+        x += rotated.width + col_gap
 
 # ── label generator ───────────────────────────────────────────────────────────
 
